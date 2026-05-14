@@ -1,24 +1,28 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
+from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.auth import UserRegistration, UserLogin, UserDetails
 from app.services.auth import register_user
 from app.services.auth import UserAuthentication, get_user_list
 from app.dependencies import get_user_authentication, get_async_session
 from typing import List
+from app.core.logger import logger
+from app.core.schema import APIResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-@router.post("/register")
+@router.post("/register", response_model=APIResponse[UserRegistration])
 async def register(
     user: UserRegistration, db: AsyncSession = Depends(get_async_session)
 ):
     try:
         user = await register_user(user, db)
-        return Response(
-            status_code=status.HTTP_201_CREATED,
-            content={"message": "User registered successfully", "data": user},
+        return APIResponse(
+            message="User registered successfully",
+            data=user
         )
     except Exception as e:
+        logger.error(f"Error during registration: {str(e)}", exc_info=True)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 
@@ -37,7 +41,7 @@ async def login(
         secure=True,
     )
 
-    return Response(status_code=status.HTTP_200_OK, content=tokens)
+    return JSONResponse(status_code=status.HTTP_200_OK, content=tokens)
 
 
 @router.post("/refresh")
@@ -59,7 +63,7 @@ async def refresh_token(
         secure=True,
     )
 
-    return Response(status_code=status.HTTP_200_OK, content=new_tokens)
+    return JSONResponse(status_code=status.HTTP_200_OK, content=new_tokens)
 
 
 @router.post("/logout")
@@ -73,7 +77,7 @@ async def logout(
         await auth_service.logout(refresh_token)
 
     response.delete_cookie("refresh_token")
-    return Response(
+    return JSONResponse(
         status_code=status.HTTP_200_OK, content={"detail": "Successfully logged out"}
     )
 
@@ -83,4 +87,7 @@ async def get_users(
     db: AsyncSession = Depends(get_async_session),
 ):
     users = await get_user_list(db)
+
+    logger.info(f"Retrieved {len(users)} users from the database")
+
     return users

@@ -1,12 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, model_validator
+from pydantic import BaseModel, EmailStr, model_validator, Field
 from typing import Optional
 from fastapi import HTTPException, status
-from sqlmodel import SQLModel
 
 class UserRegistration(BaseModel):
-    username: Optional[str] = None
+    username: Optional[str] = Field(default=None, json_schema_extra={"readOnly": True})
     email: EmailStr
     password: str
     password_confirm: str
@@ -16,29 +15,27 @@ class UserRegistration(BaseModel):
 
     @model_validator(mode="before")
     def validate_passwords(cls, values):
-        password = values.get('password')
-        password_confirm = values.get('password_confirm')
+        password = values.get("password")
+        password_confirm = values.get("password_confirm")
         if password != password_confirm:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Passwords do not match"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Passwords do not match"
             )
         return values
-
 
     @model_validator(mode="after")
     def sync_username_email(self):
         if not self.username:
             self.username = self.email
         return self
-    
+
 
 class UserLogin(BaseModel):
     username: EmailStr
-    password: str 
+    password: str
 
 
-class UserDetails(SQLModel):
+class UserDetails(BaseModel):
     id: int
     username: EmailStr
     email: EmailStr

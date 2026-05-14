@@ -12,6 +12,7 @@ import jwt
 from datetime import datetime, timedelta
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 import uuid
+from app.core.logger import logger
 
 
 async def get_user_by_email(email: str, db: AsyncSession):
@@ -26,7 +27,8 @@ async def get_user_list(db: AsyncSession):
 async def register_user(user_data: UserRegistration, db: AsyncSession):
     email = user_data.email
     existing_user = await get_user_by_email(email, db)
-    if existing_user.scalar_one_or_none():
+    if existing_user:
+        logger.warning(f"User already registered--email: {email}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="User already registered."
         )
@@ -58,6 +60,7 @@ class JwtService:
             pclaim = str(int.from_bytes(bclaim, "big"))
             return pclaim
         except Exception as e:
+            logger.error(f"Error generating pclaim for user {user.id}: {e}")
             return None
 
     async def create_tokens(self, user: User, custom_claims: dict = None):
@@ -121,12 +124,14 @@ class JwtService:
             )
             return payload
         except ExpiredSignatureError:
+            logger.warning("Token has expired")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Token has expired.",
                 headers={"WWW-Authenticate": "Bearer"},
             )
         except InvalidTokenError:
+            logger.warning("Invalid token")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid token.",
@@ -151,6 +156,7 @@ class JwtService:
                 select(BlacklistedToken).where(BlacklistedToken.token == outstanding.id)
             )
             if b_result.scalar_one_or_none():
+                logger.warning(f"Attempt to blacklist already blacklisted token with jti: {jti}")
                 raise HTTPException(status_code=401, detail="Token already blacklisted")
 
             new_blacklist = BlacklistedToken(token=outstanding.id)
@@ -169,12 +175,14 @@ class JwtService:
         outstanding = result.scalar_one_or_none()
 
         if not outstanding:
+            logger.warning(f"Refresh token not found in database with jti: {jti}")
             raise HTTPException(status_code=401, detail="Token not found")
 
         b_result = await self.db.execute(
             select(BlacklistedToken).where(BlacklistedToken.token == outstanding.id)
         )
         if b_result.scalar_one_or_none():
+            logger.warning(f"Attempt to use blacklisted token with jti: {jti}")
             raise HTTPException(status_code=401, detail="Refresh token is blacklisted")
 
         u_result = await self.db.execute(
@@ -185,6 +193,7 @@ class JwtService:
             raise HTTPException(status_code=401, detail="User not found or inactive")
 
         if payload.get("pclaim") != self.get_pclaim(user):
+            logger.warning(f"Token is invalid for user {user.id}. Password may have changed.")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Token is invalid. Password may have changed.",
@@ -212,6 +221,7 @@ class UserAuthentication(JwtService):
     async def authenticate_user(self, email: str, password: str):
         user = await get_user_by_email(email, self.db)
         if not user or not user.verify_password(password):
+            logger.warning(f"Failed login attempt for email: {email}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid email or password.",
