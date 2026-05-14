@@ -11,7 +11,7 @@ from app.core.schema import APIResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-@router.post("/register", response_model=APIResponse[UserRegistration])
+@router.post("/register", response_model=APIResponse[UserDetails])
 async def register(
     user: UserRegistration, db: AsyncSession = Depends(get_async_session)
 ):
