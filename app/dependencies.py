@@ -3,10 +3,8 @@ from app.db.database import async_session_maker
 from typing import AsyncGenerator
 from app.services.auth import UserAuthentication
 from fastapi import Depends
-from contextlib import asynccontextmanager
 
 
-@asynccontextmanager
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         try:
