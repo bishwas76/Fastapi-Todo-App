@@ -1,0 +1,19 @@
+[project]
+name = "fast-api-learning"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "aiosqlite>=0.22.1",
+    "alembic>=1.18.4",
+    "asyncpg>=0.31.0",
+    "fastapi>=0.136.1",
+    "fastapi-users[sqlalchemy]>=15.0.5",
+    "imagekitio>=5.4.0",
+    "ipython>=9.13.0",
+    "psycopg2-binary>=2.9.12",
+    "python-dotenv>=1.2.2",
+    "sqlmodel>=0.0.38",
+    "uvicorn[standard]>=0.46.0",
+]

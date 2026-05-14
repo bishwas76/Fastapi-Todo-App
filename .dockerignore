@@ -1,0 +1,23 @@
+static
+media
+.venv
+.git
+data
+ 
+# Ignore local virtualenv
+.venv/
+ 
+# VS Code config
+.vscode/
+ 
+# Python cache
+__pycache__/
+*.pyc
+ 
+# Git
+.git
+.gitignore
+ 
+# OS cruft
+.DS_Store
+ 
