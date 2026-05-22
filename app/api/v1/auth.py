@@ -3,9 +3,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.auth import UserRegistration, UserLogin, UserDetails
 from app.services.auth import register_user
-from app.services.auth import UserAuthentication, get_user_list
+from app.services.auth import UserAuthentication
 from app.dependencies import get_user_authentication, get_async_session
-from typing import List
 from app.core.logger import logger
 from app.core.schema import APIResponse
 
@@ -80,14 +79,3 @@ async def logout(
     return JSONResponse(
         status_code=status.HTTP_200_OK, content={"detail": "Successfully logged out"}
     )
-
-
-@router.get("/users", response_model=List[UserDetails])
-async def get_users(
-    db: AsyncSession = Depends(get_async_session),
-):
-    users = await get_user_list(db)
-
-    logger.info(f"Retrieved {len(users)} users from the database")
-
-    return users

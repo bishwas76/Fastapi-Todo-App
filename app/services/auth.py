@@ -232,7 +232,7 @@ class UserAuthentication(JwtService):
     async def login(self, credentials: UserLogin):
         user = await self.authenticate_user(credentials.username, credentials.password)
         tokens = await self.create_tokens(user, custom_claims=self.custom_claims)
-        return tokens
+        return tokens   
 
     async def logout(self, refresh_token_str: str):
         await self.blacklist_refresh_token(refresh_token_str)
