@@ -361,6 +361,7 @@ dependencies = [
     { name = "ipython" },
     { name = "psycopg2-binary" },
     { name = "python-dotenv" },
+    { name = "python-multipart" },
     { name = "sqlmodel" },
     { name = "uvicorn", extra = ["standard"] },
 ]
@@ -376,6 +377,7 @@ requires-dist = [
     { name = "ipython", specifier = ">=9.13.0" },
     { name = "psycopg2-binary", specifier = ">=2.9.12" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
+    { name = "python-multipart", specifier = ">=0.0.27" },
     { name = "sqlmodel", specifier = ">=0.0.38" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.46.0" },
 ]
