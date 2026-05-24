@@ -6,11 +6,15 @@ from app.api.v1.user import (
     router as user_router,
 )
 from app.middlewares.authentication import authentication_dependency
+from app.core.permissions import IsAuthenticated
 
-api_router = APIRouter(prefix="/api/v1")
+api_router = APIRouter(
+    prefix="/api/v1",
+    dependencies=[Depends(authentication_dependency)],
+)
 
-protected_gateway = APIRouter(dependencies=[Depends(authentication_dependency)])
 public_gateway = APIRouter()
+protected_gateway = APIRouter(dependencies=[Depends(IsAuthenticated())])
 
 pubic_routers = [
     auth_router,

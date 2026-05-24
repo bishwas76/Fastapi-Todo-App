@@ -9,17 +9,15 @@ class BasePermission(ABC):
     def has_permission(self, request: Request) -> bool:
         pass
 
-    def __call__(self):
+    def __call__(self, request: Request):
         """
         Allows the permission class to be used as a dependency in FastAPI routes.
         """
-        def dependency(request: Request):
-            if not self.has_permission(request):
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="You do not have permission to perform this action.",
-                )
-        return dependency
+        if not self.has_permission(request):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to perform this action.",
+            )
 
 class IsAuthenticated(BasePermission):
     """Permission class that checks if the user is authenticated."""

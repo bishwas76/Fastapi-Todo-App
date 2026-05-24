@@ -1,7 +1,7 @@
 from typing import Optional
 
 from starlette.requests import Request
-from fastapi import Depends, status, Security, HTTPException
+from fastapi import Depends, Security
 from fastapi.security import (
     HTTPBasic,
     HTTPBasicCredentials,
@@ -40,6 +40,7 @@ async def authentication_dependency(
     """
     try:
         access_token = None
+        request.state.user = None
         if token_credentials:
             access_token = token_credentials.credentials
         elif credentials:
@@ -49,7 +50,6 @@ async def authentication_dependency(
             tokens = await user_authentication.create_tokens(user)
             access_token = tokens["access_token"]
         if not access_token:
-            request.state.user = None
             return
         decoded_token = user_authentication.jwt_decode(access_token)
         user_id = decoded_token.get("user_id")

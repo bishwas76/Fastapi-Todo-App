@@ -10,7 +10,7 @@ from app.core.permissions import AllowAny
 router = APIRouter(prefix="/users", tags=["users"])
 permissioned_router = APIRouter(dependencies=[Depends(AllowAny())])
 
-@permissioned_router.get("/list", response_model=List[UserDetails])
+@router.get("/list", response_model=List[UserDetails])
 async def get_users(
     request: Request,
     db: AsyncSession = Depends(get_async_session),

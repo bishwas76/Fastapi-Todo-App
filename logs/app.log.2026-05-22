@@ -1,0 +1,52 @@
+[INFO] 2026-05-22 10:12:54(app.core.logger.94) Retrieved 1 users from the database
+[INFO] 2026-05-22 10:18:17(app.core.logger.94) Retrieved 1 users from the database
+[ERROR] 2026-05-22 10:33:35(app.core.logger.92) Error occurred: property 'user' of 'Request' object has no setter
+Traceback (most recent call last):
+  File "/app/app/middlewares/authentication.py", line 90, in authentication_dependency
+    request.user = user_instance
+    ^^^^^^^^^^^^
+AttributeError: property 'user' of 'Request' object has no setter
+[INFO] 2026-05-22 10:33:55(app.core.logger.94) Retrieved 1 users from the database
+[INFO] 2026-05-22 10:34:47(app.core.logger.91) Fetching user list from the database (email='user@email.com' username='user@email.com' first_name='Bishwas' last_name='Dangol' last_login=datetime.datetime(2026, 5, 22, 10, 30, 50, 173776) password='$2b$12$1e7bCDzHge29xdR9JJ94de6FcFCGDv3oGzzGCM0kOu4pEI/akSq8K' id=9 middle_name=None is_active=True is_superuser=False)
+[INFO] 2026-05-22 10:34:47(app.core.logger.94) Retrieved 1 users from the database
+[INFO] 2026-05-22 10:36:04(app.core.logger.91) Fetching user list from the database (9)
+[INFO] 2026-05-22 10:36:04(app.core.logger.94) Retrieved 1 users from the database
+[ERROR] 2026-05-22 10:41:56(app.core.logger.93) Error occurred: 'HTTPBasicCredentials' object has no attribute 'credentials'
+Traceback (most recent call last):
+  File "/app/app/middlewares/authentication.py", line 74, in authentication_dependency
+    token = credentials.credentials
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.14/site-packages/pydantic/main.py", line 1042, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HTTPBasicCredentials' object has no attribute 'credentials'
+[INFO] 2026-05-22 10:58:25(app.core.logger.93) Retrieved 1 users from the database
+[INFO] 2026-05-22 10:59:24(app.core.logger.93) Retrieved 1 users from the database
+[ERROR] 2026-05-22 11:00:10(app.core.logger.104) Error occurred: 401: Unauthorized
+Traceback (most recent call last):
+  File "/app/app/middlewares/authentication.py", line 87, in authentication_dependency
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 401: Unauthorized
+[ERROR] 2026-05-22 11:00:14(app.core.logger.104) Error occurred: 401: Unauthorized
+Traceback (most recent call last):
+  File "/app/app/middlewares/authentication.py", line 87, in authentication_dependency
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 401: Unauthorized
+[ERROR] 2026-05-22 11:00:38(app.core.logger.104) Error occurred: 401: Unauthorized
+Traceback (most recent call last):
+  File "/app/app/middlewares/authentication.py", line 87, in authentication_dependency
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 401: Unauthorized
+[ERROR] 2026-05-22 11:45:22(app.core.logger.69) Error occurred: 401: Unauthorized
+Traceback (most recent call last):
+  File "/app/app/middlewares/authentication.py", line 52, in authentication_dependency
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 401: Unauthorized
+[INFO] 2026-05-22 11:56:01(app.core.logger.20) Retrieved 1 users from the database
