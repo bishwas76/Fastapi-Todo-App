@@ -29,4 +29,5 @@ class AllowAny(BasePermission):
     """Permission class that allows access to any user, regardless of authentication status."""
 
     def has_permission(self, request: Request) -> bool:
+        request.state.user = None
         return True

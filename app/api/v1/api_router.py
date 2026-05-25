@@ -10,13 +10,17 @@ from app.core.permissions import IsAuthenticated
 
 api_router = APIRouter(
     prefix="/api/v1",
-    dependencies=[Depends(authentication_dependency)],
 )
 
 public_gateway = APIRouter()
-protected_gateway = APIRouter(dependencies=[Depends(IsAuthenticated())])
+protected_gateway = APIRouter(
+    dependencies=[
+        Depends(authentication_dependency),
+        Depends(IsAuthenticated()),
+    ]
+)
 
-pubic_routers = [
+public_routers = [
     auth_router,
     # add other routers here in the future for public access
 ]
@@ -25,7 +29,7 @@ protected_routers = [
     # add protected routers here in the future
 ]
 
-for router in pubic_routers:
+for router in public_routers:
     public_gateway.include_router(router)
 
 for protected_router in protected_routers:
