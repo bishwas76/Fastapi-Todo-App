@@ -1,9 +1,10 @@
 from datetime import datetime
 
 from pydantic import EmailStr, model_validator, Field
-from typing import Optional
-from fastapi import HTTPException, status
+from typing import Annotated, Optional
+from fastapi import Form, HTTPException, status, File, UploadFile
 from app.core.schema import BaseCamelModel
+
 
 class UserRegistration(BaseCamelModel):
     username: Optional[str] = Field(default=None, json_schema_extra={"readOnly": True})
@@ -45,3 +46,14 @@ class UserDetails(BaseCamelModel):
     last_name: Optional[str] = None
     is_active: bool
     last_login: Optional[datetime] = None
+
+class Profile(BaseCamelModel):
+    first_name: str
+    last_name: str
+    age: int
+    profile_picture: UploadFile
+
+class UserRegister(BaseCamelModel):
+    username: str
+    email: str
+    profile: Profile

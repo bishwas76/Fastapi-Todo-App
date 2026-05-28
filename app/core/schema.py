@@ -11,6 +11,7 @@ class BaseCamelModel(BaseModel):
         alias_generator=to_camel,
         populate_by_name=True,
         from_attributes=True,
+        arbitrary_types_allowed=True,
     )
 
 
@@ -19,6 +20,7 @@ class GenericCamelModel(GenericModel):
         alias_generator=to_camel,
         populate_by_name=True,
         from_attributes=True,
+        arbitrary_types_allowed=True,
     )
 
 class APIResponse(GenericCamelModel, Generic[T]):

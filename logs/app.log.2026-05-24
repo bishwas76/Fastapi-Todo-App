@@ -1,0 +1,7 @@
+[INFO] 2026-05-24 03:46:08(app.core.logger.20) Retrieved 1 users from the database
+[INFO] 2026-05-24 03:49:52(app.core.logger.20) Retrieved 1 [User(id=9, password='$2b$12$1e7bCDzHge29xdR9JJ94de6FcFCGDv3oGzzGCM0kOu4pEI/akSq8K', middle_name=None, is_active=True, is_superuser=False, first_name='Bishwas', username='user@email.com', email='user@email.com', last_name='Dangol', last_login=datetime.datetime(2026, 5, 22, 10, 58, 55, 130139))] users from the database
+[INFO] 2026-05-24 03:53:37(app.core.logger.20) Retrieved 1 users from the database
+[INFO] 2026-05-24 03:58:50(app.core.logger.20) Retrieved 1 users from the database
+[INFO] 2026-05-24 03:59:42(app.core.logger.20) Retrieved 1 users from the database
+[INFO] 2026-05-24 04:31:56(app.core.logger.20) Retrieved 1 users from the database
+[INFO] 2026-05-24 04:58:42(app.core.logger.20) Retrieved 2 users from the database
